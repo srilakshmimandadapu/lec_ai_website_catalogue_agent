@@ -1,0 +1,36 @@
+# 1. Create environment
+python -m venv .venv
+
+# Windows PowerShell
+.\.venv\Scripts\Activate.ps1
+
+# macOS/Linux
+source .venv/bin/activate
+
+# 2. Install
+pip install -r requirements.txt
+
+# 3. Initialise database
+python -m app.main init-db
+
+# 4. First crawl
+python -m app.main crawl --url https://books.toscrape.com/ --max-pages 10
+
+# 5. Catalogue
+python -m app.main pages
+
+# 6. Decision trace
+python -m app.main decisions
+
+# 7. Second run
+python -m app.main crawl --url https://books.toscrape.com/ --max-pages 10
+
+# 8. Prove idempotency
+python -m app.main pages
+python -m app.main runs
+
+# 9. Optional API
+uvicorn app.api:app --reload
+
+# Browser:
+# http://127.0.0.1:8000/docs
